@@ -13,11 +13,15 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
+  .get('/displaySearch', function(req, res) {displaySearchResults(res,req);})
+  .get('/displayAll',    function(req, res) {displayAllRetreats(res,req);})
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
 
-
+/****************************************************************
+ * DISPLAY SEARCH RESULTS
+ ****************************************************************/
 function displaySearchResults(res, req) {
     var type       = req.query.type;
     var start_date = req.query.start_date;
@@ -39,7 +43,34 @@ function displaySearchResults(res, req) {
 
         var jsonRetreats = JSON.stringify(result.rows);
         const params = {jsonRetreats: jsonRetreats};
-        res.render('displaySearch', params);
+        res.render('pages/displaySearch', params);
       });
 
+}
+
+
+/****************************************************************
+ * DISPLAY ALL RETREATS
+ ****************************************************************/
+function displayAllRetreats(res, req) {
+
+  var sql = "SELECT * FROM retreats";
+  //a simple get query from the database
+  pool.query(sql, function(err, result) {
+      // If an error occurred...
+      if (err) {
+          console.log("Error in query: ")
+          console.log(err);
+      }
+
+      // Log this to the console for debugging purposes.
+      console.log("Back from DB with result:");
+      console.log(result.rows);
+      var jsonRetreats = JSON.stringify(result.rows);
+      // Set up a JSON object of the values we want to pass along to the EJS result page
+      const params = {jsonRetreats: jsonRetreats};
+      res.render('pages/displayAll', params);
+
+
+  }); 
 }
