@@ -1,0 +1,102 @@
+<!-- good article I used https://stackoverflow.com/questions/47066222/can-i-render-json-parse-data-to-ejs -->
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom fonts for this template -->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+        <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+        <!-- Custom styles for this template -->
+        <link href="css/landing-page.min.css" rel="stylesheet">
+        <style>
+            /* flexbox stuff is from w3 schools */
+            .flex-container {
+              display: flex;
+              flex-direction: column;
+            }
+            
+            .flex-container > div {
+                background-color: #f1f1f1;
+                width: 80%;
+                margin: 10px;
+                text-align: center;
+                text-align: center;
+                margin:10px 10% 10px 10%;
+                padding:20px;
+                /* border-radius:10px; */
+            }
+            
+            h1 {
+                text-align:center;
+            }
+            p {
+                text-align:center;
+            }
+            .left-align {
+              text-align:left;
+            }
+            .column {
+              max-width:50%;
+            }
+            .retreat-title {
+              font-size:18px;
+            }
+            </style>
+    </head>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link href="nav.css" rel="stylesheet" type="text/css">
+        <!-- Navigation -->
+        <nav class="navbar navbar-light bg-light static-top">
+          <div class="container">
+            <a class="navbar-brand" href="#">Creative Heartbeats Retreats</a>
+            <!-- <a class="btn btn-primary" href="#">Sign In</a> -->
+            <ul>
+              <li><a class="active" href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="host.html">Host a Retreat</a></li>
+              <li><a href="attend.html">Attend a Retreat</a></li>
+              <li><a href="photos.html">Photos</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </nav>
+        <% var retreats = JSON.parse(jsonRetreats);%>
+        <br><br>
+        <h1> All Retreats</h1>
+            <% retreats.forEach(function(r) { %>
+
+                <div class="flex-container">
+                    <div>
+                        <form action='retreatSignUp.php' method='GET'>
+                          <p><b class='retreat-title'><%= r.name %> </b><br><br> <%= r.description %></p><br><br><br>
+                              <b><p class='left-align'>Location:</b> <%= r.location %> </p>
+                              <b><p class='left-align'>Price:</b> $<%= r.price %> </p>
+                              <b><p class='left-align'>Language:</b> <%= r.language %> </p>
+                              <b><p class='left-align'>Group Size:</b> <%= r.group_size %> people</p>
+                              <b><p class='left-align'>Duration:</b> <%= r.duration %> days</p>
+                              <b><p class='left-align'>Dates:</b> <%= r.start_date.substring(0,10) %> - <%= r.end_date.substring(0, 10) %></p>   
+                              <!-- <b><p class='left-align'>About the host:</b> $host</p> -->
+                              <input type='hidden' value='<%= r.name %>' name='name'>
+                              <input type='hidden' value='<%= r.duration %>' name='desc'>
+                              <input type='hidden' value='<%= r.location %>' name='location'>
+                              <input type='hidden' value='<%= r.price %>' name='price'>
+                              <input type='hidden' value='<%= r.language %>' name='language'>
+                              <input type='hidden' value='<%= r.group_size %>' name='size'>
+                              <p class='left-align margin-40'><button class='search-btn no-margin' type='submit'>Sign Up</button></p>       
+                        </form>
+                    </div>
+                </div>
+            <% }); %>
+      
+        
+        <script src="" async defer></script>
+    </body>
+</html>
