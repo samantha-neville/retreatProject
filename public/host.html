@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Creative Heartbeats Retreats | Host</title>
+
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom fonts for this template -->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+<!-- Custom styles for this template -->
+<link href="css/landing-page.min.css" rel="stylesheet">
+<!-- <link href="nav.css" rel="stylesheet" type="text/css"> -->
+</head>
+<body>
+  <link href="nav.css" rel="stylesheet" type="text/css">
+  <!-- Navigation -->
+  <nav class="navbar navbar-light bg-light static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Creative Heartbeats Retreats</a>
+      <!-- <a class="btn btn-primary" href="#">Sign In</a> -->
+      <ul>
+        <li><a class="active" href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="host.html">Host a Retreat</a></li>
+        <li><a href="attend.html">Attend a Retreat</a></li>
+        <li><a href="photos.html">Photos</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <a class='active right-margin3' href='signUp.html'>Sign Up</a>
+    <a class='active' href='signIn.html'>Sign In</a>
+  </nav>
+<br><br><br>
+<h1>Host a Retreat</h1>
+
+<p>Have a creative retreat that you want to post for others to see and sign up for? Enter the retreat information here to add it!</p>
+
+<div class="container2">
+  <form action="reviewRetreat.php" method="POST">
+
+    <!-- Retreat Info -->
+    <h2>Retreat Info</h2><br>
+    <!-- Name -->
+    <label for="name">Name</label>
+    <input class='stuff' type="text" id="name" name="name" placeholder="Your retreat name... " required>
+    <!-- Type -->
+    <label for="type">Type</label>
+    <select class='stuff' id="type" name="type">
+      <option value="paint">Painting/Drawing</option>
+      <option value="fabric">Fabric Arts</option>
+      <option value="floral">Floral</option>
+      <option value="Other">Other</option>
+    </select>
+    <!-- Start Date -->
+    <label for="start_date">Start Date</label>
+    <input class='stuff' type="text" id="start_date" name="start_date" placeholder="YYYY-MM-DD" required>
+    <!-- End Date -->
+    <label for="end_date">End Date</label>
+    <input class='stuff' type="text" id="end_date" name="end_date" placeholder="YYYY-MM-DD" required>
+    <!-- Duration -->
+    <label for="duration">Duration</label>
+    <input class='stuff' type="text" id="duration" name="duration" placeholder="Number of days (ex. 3)" required>
+    <!-- Description -->
+    <label for="description">Description</label>
+    <textarea class='stuff' id="description" name="description" placeholder="Describe your retreat.." style="height:200px"></textarea>
+    <!-- Group Size -->
+    <label for=" group_size"> Group Size</label>
+    <input class='stuff' id=" group_size" name=" group_size" placeholder="Max number of people (ex. 50)" required>
+     <!-- Language -->
+     <label for="language">Language</label>
+    <input class='stuff' id="language" name="language" placeholder="English">
+     <!-- location -->
+     <label for="location">Location</label>
+    <input class='stuff' id="location" name="location" placeholder="California, United States" required>
+    <!-- Price -->
+    <label for="price">Price</label>
+    <input class='stuff' id="price" name="price" placeholder="1000.00" required>
+     <!-- Cancel Policy -->
+     <label for="cancel">Cancel Policy</label>
+    <textarea class='stuff' id="cancel" name="cancel_policy" placeholder="Describe your cancellation policy..." style="height:200px"></textarea>
+    <!-- Your Info -->
+    <h2>Your Info</h2><br>
+    <!--First Name -->
+    <label for="fname">First Name</label>
+    <input class='stuff' type="text" id="fname" name="first" placeholder="Your first name.." required>
+    <!--Last Name -->
+    <label for="fname">Last Name</label>
+    <input class='stuff' type="text" id="lname" name="last" placeholder="Your last name.." required>
+    <!--Email -->
+    <label for="email" required>Email</label>
+    <input type='email' class='stuff' type="text" id="email" name="email" placeholder="example@example.com" required>
+     <!--Phone -->
+     <label for="phone">Phone</label>
+    <input type='tel' class='stuff' type="text" id="phone" name="phone" placeholder="1-888-888-8888" pattern="[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+    <!-- About Host-->
+    <label for="host">About the Host (You!)</label>
+    <textarea class='stuff' id="host" name="host" placeholder="Describe yourself to your attendees..." style="height:200px"></textarea>
+
+
+    <input type="submit" class='submit'  value="Next">
+  </form>
+</div>
+
+</body>
+</html> 
+ 
