@@ -1,0 +1,200 @@
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(active){
+  background-color: #111;
+  text-decoration: none;
+  color:white;
+}
+
+.active {
+  background-color: #4CAF50;
+  padding:14px;
+  color:white;
+}
+
+.active:hover {
+  background-color: #008080;
+  color:white;
+  text-decoration: none;
+
+}
+
+h1 {
+    text-align:center;
+}
+
+
+p {
+    text-align:center;
+}
+
+/* img {
+    height: 10%;
+    width: 20%;
+} */
+/* pulled from w3 schools example */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+    margin-right: 20px;
+    margin-left:20px;
+  }
+  
+  /* Create four equal columns that sits next to each other */
+  .column {
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+  }
+  
+  .column img {
+    margin-top: 8px;
+    vertical-align: middle;
+    width: 100%;
+  }
+  
+  /* Responsive layout - makes a two column-layout instead of four columns */
+  @media screen and (max-width: 800px) {
+    .column {
+      flex: 50%;
+      max-width: 50%;
+    }
+  }
+  
+  /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .column {
+      flex: 100%;
+      max-width: 100%;
+    }
+  }
+
+  .stuff{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+  }
+  
+  .submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .submit:hover {
+    background-color: #45a049;
+  }
+  
+  .container2 {
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin: 20px;
+    border: #4CAF50;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  .right-margin {
+    margin:30px 43%;
+  }
+
+  .right-margin2 {
+    margin:30px 47%;
+  }
+
+  .right-margin3 { 
+    margin-right:10px;
+   }
+
+   .err-message {
+    color: white;
+    /* border-style: solid; */
+    /* border-width: 2px;
+    border-color: red; */
+    background: #333;
+    padding: 20px;
+    margin: 20px;
+    /* text-align: center; */
+    width: 38%
+
+   }
+
+   .search-btn {
+    height: 70px;
+    width: 100%;
+    background: #008080;
+    /* white-space: nowrap; */
+    border-radius: .5px;
+    font-size: 25px;
+    color: #fff;
+    /* transition: all .2s ease-out, color .2s ease-out; */
+    border: 0;
+    cursor: pointer;
+    /* font-weight: 400; */
+    font-family: 'Poppins', sans-serif;
+    padding:20px;
+   }
+
+   .search-btn:hover {
+     color:white;
+     background-color: #333;
+     text-decoration:none;
+   }
+
+   .no-margin {
+     margin:0px;
+   }
+
+   .margin-40 {
+     margin-top:40px;
+   }
+
+   .search-btn2 {
+    height: 70px;
+    width: 100%;
+    background: #008080;
+    /* white-space: nowrap; */
+    border-radius: .5px;
+    font-size: 25px;
+    color: #fff;
+    /* transition: all .2s ease-out, color .2s ease-out; */
+    border: 0;
+    cursor: pointer;
+    /* font-weight: 400; */
+    font-family: 'Poppins', sans-serif;
+    padding:20px;
+    margin:40%;
+   }
+
+   .search-btn2:hover {
+    color:white;
+    background-color: #333;
+    text-decoration:none;
+  }
