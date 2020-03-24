@@ -4,6 +4,9 @@ const PORT = process.env.PORT || 5000
 const { Pool } = require('pg')
 const connectionString = process.env.DATABASE_URL || "postgres://zbysucmtpsrwvw:0ff68dab033be013e3f2d3b2aaa6939b8bad8b63015892293d1176b827c32da8@ec2-3-224-165-85.compute-1.amazonaws.com:5432/d11jjk2h0d7bcm?ssl=true";
 const pool = new Pool({connectionString: connectionString});
+var router = express.Router();
+var pg = require('pg');
+module.exports = router;
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
