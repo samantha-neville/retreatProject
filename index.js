@@ -15,6 +15,8 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .get('/displaySearch', function(req, res) { displaySearchResults(res,req); })
   .get('/displayAll',    function(req, res) { displayAllRetreats(res,req);   })
+  .get('/signIn',        function(req, res) { signIn(res,req);               })
+  .get('/signUp',        function(req, res) { signUp(res,req);               })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
@@ -73,4 +75,24 @@ function displayAllRetreats(res, req) {
 
 
   }); 
+}
+
+/****************************************************************
+ * SIGN UP
+ ****************************************************************/
+function signUp(res, req) {
+  var first_name = req.query.first;
+  var last_name  = req.query.last;
+  var email      = req.query.email;
+  var password   = req.query.password;
+  console.log(first_name, last_name, email, password);
+}
+
+/****************************************************************
+ * SIGN IN
+ ****************************************************************/
+function signIn(res, req) {
+  var email    = req.query.email;
+  var password = req.query.password;
+  console.log(email, password);
 }

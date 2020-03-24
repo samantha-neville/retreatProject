@@ -54,20 +54,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <link href="nav.css" rel="stylesheet" type="text/css">
         <!-- Navigation -->
-        <nav class="navbar navbar-light bg-light static-top">
-          <div class="container">
-            <a class="navbar-brand" href="#">Creative Heartbeats Retreats</a>
-            <!-- <a class="btn btn-primary" href="#">Sign In</a> -->
-            <ul>
-              <li><a class="active" href="index.html">Home</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="host.html">Host a Retreat</a></li>
-              <li><a href="attend.html">Attend a Retreat</a></li>
-              <li><a href="photos.html">Photos</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            </ul>
-          </div>
-        </nav>
+        <%- include('../partials/nav'); -%>
         <% var retreats = JSON.parse(jsonRetreats);%>
         <br><br>
         <h1> All Retreats</h1>
