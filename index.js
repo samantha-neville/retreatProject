@@ -95,4 +95,49 @@ function signIn(res, req) {
   var email    = req.query.email;
   var password = req.query.password;
   console.log(email, password);
+
+  //query the database to see if this person exists in it
+  var sql = "SELECT id, password FROM users WHERE email='"+email+"'";
+  pool.query(sql, function(err, result) {
+    // If an error occurred...
+    if (err) {
+        console.log("Error in query: ")
+        console.log(err);
+    }
+
+    // Log this to the console for debugging purposes.
+    console.log("Back from DB with result:");
+    console.log(result.rows);
+    var jsonUser = JSON.stringify(result.rows);
+    var user = JSON.parse(jsonUser);
+    user.forEach(function(u) {
+      console.log('password' + u.password);
+      //pulled this idea from stack overflow. makes it so that my php 
+      //encrypted passwords work here in node
+      var hash    = u.password;
+      var bcrypt  = require('bcrypt');
+      var isValid = false;
+      hash = hash.replace(/^\$2y(.+)$/i, '$2a$1');
+      bcrypt.compare(password, hash, function(err, result) {
+          console.log(result);
+          result == true ? isValid = true : isValid = false;
+          console.log('final: ' + isValid);
+          if (isValid == true) {
+            console.log('logged in');
+          }
+          else 
+            console.log('you are a fraud');
+      });
+
+
+    });
+    // Set up a JSON object of the values we want to pass along to the EJS result page
+    const params = {jsonUser: jsonUser};
+    res.render('pages/index.ejs', params);
+  
+  
+
+  }); 
+
+
 }
