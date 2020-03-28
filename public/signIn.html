@@ -13,6 +13,8 @@
 <!-- Custom styles for this template -->
 <link href="css/landing-page.min.css" rel="stylesheet">
 <link href="nav.css" rel="stylesheet" type="text/css">
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
   <!-- Navigation -->
@@ -44,6 +46,20 @@
     <input class='stuff' type="password" id="password" name="password" placeholder="password">
     <input type="submit" class='submit'  value="Log In">
   </form>
+  <button id="button">test post</button>
+  <script>
+    console.log('hi');
+    $("button").click(function(){
+  $.post("https://intense-wave-40243.herokuapp.com/testPost",
+    {
+      name: "Donald Duck",
+      city: "Duckburg"
+    },
+    function(data, status){
+      alert("Data: " + data + "\nStatus: " + status);
+    });
+  });
+  </script>
 </div>
 </body>
 </html> 
