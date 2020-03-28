@@ -48,17 +48,17 @@
   </form>
   <button id="button">test post</button>
   <script>
-    console.log('hi');
     $("button").click(function(){
-  $.post("https://intense-wave-40243.herokuapp.com/testPost",
-    {
-      name: "Donald Duck",
-      city: "Duckburg"
-    },
-    function(data, status){
-      alert("Data: " + data + "\nStatus: " + status);
+      console.log('hi');
+      var params = {
+        username: '123username',
+        password: 'password123'
+      };
+
+      $.post("/login", params, function(res) {
+        console.log('back at it');
+      });
     });
-  });
   </script>
 </div>
 </body>
