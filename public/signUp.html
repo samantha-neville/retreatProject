@@ -13,6 +13,8 @@
 <!-- Custom styles for this template -->
 <link href="css/landing-page.min.css" rel="stylesheet">
 <link href="nav.css" rel="stylesheet" type="text/css">
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -41,7 +43,7 @@
     <label for="fname">First Name</label>
     <input class='stuff' type="text" id="fname" name="first" placeholder="Your first name.." required>
     <!--Last Name -->
-    <label for="fname">Last Name</label>
+    <label for="lname">Last Name</label>
     <input class='stuff' type="text" id="lname" name="last" placeholder="Your last name.." required>
     <!--Email -->
     <label for="email" required>Email</label>
@@ -51,6 +53,43 @@
     <input class='stuff' type="password" id="password" name="password" placeholder="password">
     <input type="submit" class='submit'  value="Sign Up">
   </form>
+  <button id="button">test post</button>
+  <div id="status"></div>
+  <script>
+    $("#button").click(function(){
+      console.log('hi');
+      var fname    = $('#fname').val();
+      var lname    = $('#lname').val();
+      var email    = $('#email').val();
+      var password = $('#password').val();
+      console.log('email', email);
+      console.log('password', password);
+      console.log('fname', fname);
+      console.log('lname', lname);
+      var params = {
+        email: email,
+        password: password,
+        fname: fname, 
+        lname: lname
+      };
+
+      $.post("/signUp", params, function(result) {
+		if (result && result.success) {
+      console.log('success');
+      $("#status").text("Successfully signed up.");
+      window.location.assign(result.redirect);
+
+		} else {
+      console.log('signup error');
+      $("#status").text("Error signing up.");
+      if (result.redirect) {
+        console.log('redirect yo');
+        window.location.assign(result.redirect);
+      }
+		}
+  });
+});
+  </script>
 </div>
 </body>
 </html> 

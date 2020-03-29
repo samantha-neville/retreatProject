@@ -1,15 +1,21 @@
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
+const express  = require('express')
+const path     = require('path')
+const PORT     = process.env.PORT || 5000
+var router     = express.Router();
+var pg         = require('pg');
+module.exports = router;
+
+//database connection stuff
 const { Pool } = require('pg')
 const connectionString = process.env.DATABASE_URL || "postgres://zbysucmtpsrwvw:0ff68dab033be013e3f2d3b2aaa6939b8bad8b63015892293d1176b827c32da8@ec2-3-224-165-85.compute-1.amazonaws.com:5432/d11jjk2h0d7bcm?ssl=true";
 const pool = new Pool({connectionString: connectionString});
-var router = express.Router();
-var pg = require('pg');
-module.exports = router;
+
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
+  .use(express.urlencoded({ extended: true }))
+  .use(express.json())
+  // .use(session({secret: 'chickienuggies', resave: true, saveUninitialized: true}))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
@@ -17,6 +23,10 @@ express()
   .get('/displayAll',    function(req, res) { displayAllRetreats(res,req);   })
   .get('/signIn',        function(req, res) { signIn(res,req);               })
   .get('/signUp',        function(req, res) { signUp(res,req);               })
+  .post('/login',  handleLogin)
+  .post('/signUp', handleSignup)
+
+
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
@@ -134,10 +144,111 @@ function signIn(res, req) {
     // Set up a JSON object of the values we want to pass along to the EJS result page
     const params = {jsonUser: jsonUser};
     res.render('pages/index.ejs', params);
-  
-  
+  }); 
+}
 
+
+
+/****************************************************************
+ * login 
+ ****************************************************************/
+function handleLogin(request, response) {
+	var result   = {success: false};
+  var email    = request.body.email;
+  var password = request.body.email;
+  console.log(email, password);
+
+  //query the database to see if this person exists in it
+  var sql = "SELECT id, password FROM users WHERE email='"+email+"'";
+  pool.query(sql, function(err, result) {
+    // If an error occurred...
+    if (err) {
+        console.log("Error in query: ")
+        console.log(err);
+    }
+
+    // Log this to the console for debugging purposes.
+    console.log("Back from DB with result:");
+    console.log(result.rows);
+    var jsonUser = JSON.stringify(result.rows);
+    var user = JSON.parse(jsonUser);
+    if (result.rows) {
+      var id = user[0].id;
+      console.log('idddd',id);
+      console.log('password' + user[0].password);
+      //pulled this idea from stack overflow. makes it so that my php 
+      //encrypted passwords work here in node
+      var hash    = user[0].password;
+      var bcrypt  = require('bcrypt');
+      var isValid = false;
+      hash = hash.replace(/^\$2y(.+)$/i, '$2a$1');
+      bcrypt.compare(password, hash, function(err, result) {
+          console.log(result);
+          result == true ? isValid = true : isValid = false;
+          console.log('final: ' + isValid);
+          if (isValid == true) {
+            console.log('logged in');
+            result = {success: true};
+            callback(true);
+            //maybe now it just sets it in the session, and then the session can
+            //do all of the other stuff
+          }
+          else {
+            callback(false);
+          }
+      });
+    }
+    else {
+      callback(false);
+    }
+    response.json(result);
   }); 
 
+}
 
+
+/****************************************************************
+ * sign up
+ ****************************************************************/
+function handleSignup(request, response) {
+	var result   = {success: false, redirect: ''};
+  var email    = request.body.email;
+  var password = request.body.email;
+  console.log(email, password);
+
+  //query the database to see if this person exists in it
+  var sql = "SELECT id, password FROM users WHERE email='"+email+"'";
+  pool.query(sql, function(err, result) {
+    // If an error occurred...
+    if (err) {
+        console.log("Error in query: ")
+        console.log(err);
+    }
+
+    // Log this to the console for debugging purposes.
+    console.log("Back from DB with result:");
+    console.log(result.rows);
+    var jsonUser = JSON.stringify(result.rows);
+    var user = JSON.parse(jsonUser);
+    if (typeof user[0] === 'undefined') {
+      //then there is already someone with that email
+      //fail signup and redirect them to the sign IN page so they can log into their acct
+      var result = {success: false, redirect: 'signIn.html'};
+      response.json(result);
+
+    }
+    else {
+      var result = {success: true, redirect: 'index.html'};
+      response.json(result);
+    }
+  }); 
+
+}
+
+
+
+
+function callback(bool) {
+  console.log('hi');
+  console.log(bool);
 }

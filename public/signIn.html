@@ -47,18 +47,27 @@
     <input type="submit" class='submit'  value="Log In">
   </form>
   <button id="button">test post</button>
+  <div id="status"></div>
   <script>
-    $("button").click(function(){
+    $("#button").click(function(){
       console.log('hi');
+      var email    = $('#email').val();
+      var password = $('#password').val();
+      console.log('email', email);
+      console.log('password', password);
       var params = {
-        username: '123username',
-        password: 'password123'
+        email: email,
+        password: password
       };
 
-      $.post("/login", params, function(res) {
-        console.log('back at it');
-      });
-    });
+      $.post("/login", params, function(result) {
+		if (result && result.success) {
+			$("#status").text("Successfully logged in.");
+		} else {
+			$("#status").text("Error logging in.");
+		}
+  });
+});
   </script>
 </div>
 </body>
