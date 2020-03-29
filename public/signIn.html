@@ -47,6 +47,7 @@
     <!-- <input type="submit" class='submit'  value="Log In"> -->
   </form>
   <button id="button" class="submit">Log In</button>
+  <br><br>
   <div id="status"></div>
   <script>
     $("#button").click(function(){
@@ -65,7 +66,7 @@
           $("#status").text("Successfully logged in.");
           window.location.assign(result.redirect);
         } else {
-          $("#status").text("Error logging in.");
+          $("#status").text("Wrong username/password combo. Please Try again.");
         }
       });
   });
