@@ -231,14 +231,14 @@ function handleSignup(request, response) {
     var jsonUser = JSON.stringify(result.rows);
     var user = JSON.parse(jsonUser);
     if (typeof user[0] === 'undefined') {
-      //then there is already someone with that email
-      //fail signup and redirect them to the sign IN page so they can log into their acct
-      var result = {success: false, redirect: 'signIn.html'};
+      var result = {success: true, redirect: 'index.html'};
       response.json(result);
 
     }
     else {
-      var result = {success: true, redirect: 'index.html'};
+      //then there is already someone with that email
+      //fail signup and redirect them to the sign IN page so they can log into their acct
+      var result = {success: false, redirect: 'signIn.html'};
       response.json(result);
     }
   }); 
