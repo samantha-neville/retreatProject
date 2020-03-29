@@ -153,9 +153,8 @@ function signIn(res, req) {
  * login 
  ****************************************************************/
 function handleLogin(request, response) {
-	var result   = {success: false};
   var email    = request.body.email;
-  var password = request.body.email;
+  var password = request.body.password;
   console.log(email, password);
 
   //query the database to see if this person exists in it
@@ -174,8 +173,7 @@ function handleLogin(request, response) {
     var user = JSON.parse(jsonUser);
     if (result.rows) {
       var id = user[0].id;
-      console.log('idddd',id);
-      console.log('password' + user[0].password);
+      console.log('password',user[0].password);
       //pulled this idea from stack overflow. makes it so that my php 
       //encrypted passwords work here in node
       var hash    = user[0].password;
@@ -187,21 +185,20 @@ function handleLogin(request, response) {
           result == true ? isValid = true : isValid = false;
           console.log('final: ' + isValid);
           if (isValid == true) {
-            console.log('logged in');
-            result = {success: true};
-            callback(true);
-            //maybe now it just sets it in the session, and then the session can
-            //do all of the other stuff
+            var result = {success: true, redirect:'account.html'};
+            response.json(result);
+            //TO DO: set the session variables
           }
           else {
-            callback(false);
+            var result = {success: false, redirect:''};
+            response.json(result);          
           }
       });
     }
     else {
-      callback(false);
+      var result = {success: false, redirect:''};
+      response.json(result);
     }
-    response.json(result);
   }); 
 
 }
@@ -211,7 +208,6 @@ function handleLogin(request, response) {
  * sign up
  ****************************************************************/
 function handleSignup(request, response) {
-	var result   = {success: false, redirect: ''};
   var email    = request.body.email;
   var password = request.body.email;
   console.log(email, password);
@@ -232,6 +228,8 @@ function handleSignup(request, response) {
     var user = JSON.parse(jsonUser);
     if (typeof user[0] === 'undefined') {
       var result = {success: true, redirect: 'index.html'};
+      //TO DO: actually put the new account info into the database
+
       response.json(result);
 
     }

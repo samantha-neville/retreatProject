@@ -61,13 +61,14 @@
       };
 
       $.post("/login", params, function(result) {
-		if (result && result.success) {
-			$("#status").text("Successfully logged in.");
-		} else {
-			$("#status").text("Error logging in.");
-		}
+        if (result && result.success) {
+          $("#status").text("Successfully logged in.");
+          window.location.assign(result.redirect);
+        } else {
+          $("#status").text("Error logging in.");
+        }
+      });
   });
-});
   </script>
 </div>
 </body>
