@@ -37,20 +37,21 @@
 <div class="container2">
 
 <h1>Sign In</h1>
-<form action="/signIn" method="GET">
+<form action="#">
     <!--Email -->
     <label for="email" required>Email</label>
     <input type='email' class='stuff' type="text" id="email" name="email" placeholder="example@example.com" required>
     <!-- Password -->
     <label for="password">Password</label>
     <input class='stuff' type="password" id="password" name="password" placeholder="password">
-    <!-- <input type="submit" class='submit'  value="Log In"> -->
+    <!-- <input type="submit" class='submit' id='submitButton' value="Log In"> -->
   </form>
-  <button id="button" class="submit">Log In</button>
+  <button id="submitButton" class="submit">Log In</button>
   <br><br>
   <div id="status"></div>
   <script>
-    $("#button").click(function(){
+    $("#submitButton").click(function(){
+      $("#status").text("Attempting to log you in...");
       console.log('hi');
       var email    = $('#email').val();
       var password = $('#password').val();
@@ -63,10 +64,12 @@
 
       $.post("/login", params, function(result) {
         if (result && result.success) {
-          $("#status").text("Successfully logged in.");
+          console.log('made it back here');
           window.location.assign(result.redirect);
+        } else if (result.redirect == 'no matching email') {
+          $("#status").text("No matching email found. Go to sign up.");
         } else {
-          $("#status").text("Wrong username/password combo. Please Try again.");
+          $("#status").text("Wrong password. Please try again.");
         }
       });
   });

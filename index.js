@@ -21,8 +21,8 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .get('/displaySearch', function(req, res) { displaySearchResults(res,req); })
   .get('/displayAll',    function(req, res) { displayAllRetreats(res,req);   })
-  .get('/signIn',        function(req, res) { signIn(res,req);               })
-  .get('/signUp',        function(req, res) { signUp(res,req);               })
+  // .get('/signIn',        function(req, res) { signIn(res,req);               })
+  // .get('/signUp',        function(req, res) { signUp(res,req);               })
   .post('/login',  handleLogin)
   .post('/signUp', handleSignup)
 
@@ -171,7 +171,7 @@ function handleLogin(request, response) {
     console.log(result.rows);
     var jsonUser = JSON.stringify(result.rows);
     var user = JSON.parse(jsonUser);
-    if (result.rows) {
+    if (result.rows && user[0]) {
       var id = user[0].id;
       console.log('password',user[0].password);
       //pulled this idea from stack overflow. makes it so that my php 
@@ -190,13 +190,13 @@ function handleLogin(request, response) {
             //TO DO: set the session variables
           }
           else {
-            var result = {success: false, redirect:''};
+            var result = {success: false, redirect:'wrong password'};
             response.json(result);          
           }
       });
     }
     else {
-      var result = {success: false, redirect:''};
+      var result = {success: false, redirect:'no matching email'};
       response.json(result);
     }
   }); 
