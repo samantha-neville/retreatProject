@@ -49,6 +49,7 @@ p {
   font-size:18px;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
  <!-- Navigation -->
@@ -73,15 +74,36 @@ p {
 <h1>Your Account</h1>
 
 <div class="flex-container">
-
+<div id='user'>Loading account info...</div>
+<div id='email'></div>
+<div id='id'></div>
 </div>
 <br><br>
-<!-- TO DO: make sure that they are signed in by checking session varibles -->
-<!-- TO DO: pull from the database the user's account information -->
 <!-- idea: maybe only show the basic info, and then they click a button 
 if they want to show their retreats, and an ajax requests gets 
 them from the database -->
 
+<script>
+$.get('/getAccountInfo',function(result){
+  if (result && result.success) {
+    var user  = JSON.parse(result.data);
+    var name  = user[0].name + " " + user[0].last_name;
+    var email = user[0].email; 
+    var id    = user[0].id;
+    $('#user').html(name);
+    $('#email').html(email);
+    $('#id').html("User Id: " + id);
 
+    console.log(user);
+  }
+  else {
+    window.location.assign('signIn.html');
+  }
+
+
+
+});
+
+</script>
 </body>
 </html> 
