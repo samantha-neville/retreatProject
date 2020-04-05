@@ -22,10 +22,12 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .get('/displaySearch', function(req, res) { displaySearchResults(res,req); })
   .get('/displayAll',    function(req, res) { displayAllRetreats(res,req);   })
-  .get('/getAccountInfo', getAccountInfo)
-  .get('/verifyLogin',    verifyLogin)
-  .post('/login',         handleLogin)
-  .post('/signUp',        handleSignup)
+  .get('/getAccountInfo',       getAccountInfo)
+  .get('/verifyLogin',          verifyLogin)
+  .get('/getHostingRetreats',   getHostingRetreats)
+  .get('/getAttendingRetreats', getAttendingRetreats)
+  .post('/login',               login)
+  .post('/signUp',              signup)
   // .get('/signIn',        function(req, res) { signIn(res,req);               })
   // .get('/signUp',        function(req, res) { signUp(res,req);               })
 
@@ -94,9 +96,9 @@ function displayAllRetreats(res, req) {
 
 
 /****************************************************************
- * login 
+ * LOGIN 
  ****************************************************************/
-function handleLogin(request, response) {
+function login(request, response) {
   var email    = request.body.email;
   var password = request.body.password;
   console.log(email, password);
@@ -150,9 +152,9 @@ function handleLogin(request, response) {
 
 
 /****************************************************************
- * sign up
+ * SIGNUP
  ****************************************************************/
-function handleSignup(request, response) {
+function signup(request, response) {
   var email    = request.body.email;
   var password = request.body.email;
   console.log(email, password);
@@ -190,13 +192,12 @@ function handleSignup(request, response) {
 
 
 /****************************************************************
- * VERIFY LOGIN - check if someone is logged in 
+ * get ACCOUNT INFO
  ****************************************************************/
 function getAccountInfo(request, response) {
   if (request.session.user) {
     console.log(request.session.user);
     var id = request.session.user;
-    // They are logged in!
     //query the database to see if this person exists in it
     var sql = "SELECT * FROM users WHERE id="+id;
     pool.query(sql, function(err, result) {
@@ -231,7 +232,7 @@ function getAccountInfo(request, response) {
 
 
 /****************************************************************
- * VERIFY LOGIN - check if someone is logged in 
+ * VERIFY LOGIN - check if someone is logged in (pulled from team activity code)
  ****************************************************************/
 function verifyLogin(request, response) {
   if (request.session.user) {
@@ -248,6 +249,9 @@ function verifyLogin(request, response) {
 }
 
 
+/****************************************************************
+ * LOGOUT - check if someone is logged in 
+ ****************************************************************/
 function handleLogout(request, response) {
 	var result = {success: false};
 
@@ -260,62 +264,90 @@ function handleLogout(request, response) {
 	response.json(result);
 }
 
-// /****************************************************************
-//  * SIGN UP
-//  ****************************************************************/
-// function signUp(res, req) {
-//   var first_name = req.query.first;
-//   var last_name  = req.query.last;
-//   var email      = req.query.email;
-//   var password   = req.query.password;
-//   console.log(first_name, last_name, email, password);
-// }
 
-// /****************************************************************
-//  * SIGN IN
-//  ****************************************************************/
-// function signIn(res, req) {
-//   var email    = req.query.email;
-//   var password = req.query.password;
-//   console.log(email, password);
+/****************************************************************
+ * get ATTENDING retreats - get all retreats someone is attending from DB
+ ****************************************************************/
+function getAttendingRetreats(request, response) {
+  if (request.session.user) {
+    console.log(request.session.user);
+    var id = request.session.user;
+    //query the database to see if this person exists in it
+    var sql = "SELECT attendees.user_id, attendees.retreat_id, retreats.id, retreats.name, retreats.price FROM attendees FULL OUTER JOIN retreats ON attendees.retreat_id = retreats.id WHERE attendees.user_id =" +  id;
+    pool.query(sql, function(err, result) {
+      // If an error occurred...
+      if (err) {
+          console.log("Error in query: ")
+          console.log(err);
+        }
+        
+        // Log this to the console for debugging purposes.
+        console.log("Back from DB with result:");
+        console.log(result.rows);
+      var jsonRetreats = JSON.stringify(result.rows);
+      var retreats = JSON.parse(jsonRetreats);
+      if (typeof retreats[0] != 'undefined') {
+        console.log('good to go');
+        console.log('retreat 1', retreats[0].name);
+        var result = {success:true, data: jsonRetreats};
+        response.json(result);
+      }
+    }); 
+    
+		// pass things along to the next function
+	} else {
+    // They are not logged in
+		// Send back an unauthorized status
+		var result = {success:false, data: "Access Denied"};
+		response.json(result);
+	}
+}
 
-//   //query the database to see if this person exists in it
-//   var sql = "SELECT id, password FROM users WHERE email='"+email+"'";
-//   pool.query(sql, function(err, result) {
-//     // If an error occurred...
-//     if (err) {
-//         console.log("Error in query: ")
-//         console.log(err);
-//     }
-
-//     // Log this to the console for debugging purposes.
-//     console.log("Back from DB with result:");
-//     console.log(result.rows);
-//     var jsonUser = JSON.stringify(result.rows);
-//     var user = JSON.parse(jsonUser);
-//     user.forEach(function(u) {
-//       console.log('password' + u.password);
-//       //pulled this idea from stack overflow. makes it so that my php 
-//       //encrypted passwords work here in node
-//       var hash    = u.password;
-//       var bcrypt  = require('bcrypt');
-//       var isValid = false;
-//       hash = hash.replace(/^\$2y(.+)$/i, '$2a$1');
-//       bcrypt.compare(password, hash, function(err, result) {
-//           console.log(result);
-//           result == true ? isValid = true : isValid = false;
-//           console.log('final: ' + isValid);
-//           if (isValid == true) {
-//             console.log('logged in');
-//           }
-//           else 
-//             console.log('you are a fraud');
-//       });
-
-
-//     });
-//     // Set up a JSON object of the values we want to pass along to the EJS result page
-//     const params = {jsonUser: jsonUser};
-//     res.render('pages/index.ejs', params);
-//   }); 
-// }
+/****************************************************************
+ * get HOSTING retreats - get all retreats someone is hosting from DB 
+ ****************************************************************/
+function getHostingRetreats(request, response) {
+  if (request.session.user) {
+    console.log(request.session.user);
+    var id = request.session.user;
+    //query the database to see if this person exists in it
+    var sql = "SELECT id FROM hosts WHERE user_id="+id;
+    pool.query(sql, function(err, result) {
+      // If an error occurred...
+      if (err) {
+          console.log("Error in query: ")
+          console.log(err);
+        }
+        
+        // Log this to the console for debugging purposes.
+        console.log("Back from DB with result:");
+        console.log(result.rows);
+        var jsonHost = JSON.stringify(result.rows);
+        var host = JSON.parse(jsonHost);
+        console.log('good to go');
+        console.log('host', host[0].id);
+        if (typeof host[0] != 'undefined') {
+          var hostId = host[0].id
+          var sql2 = "SELECT attendees.user_id, attendees.retreat_id, retreats.id, retreats.name, retreats.price FROM attendees FULL OUTER JOIN retreats ON attendees.retreat_id = retreats.id WHERE retreats.host_id = " + hostId;
+          pool.query(sql2, function(err, result) {
+            var jsonRetreats = JSON.stringify(result.rows);
+            var retreats = JSON.parse(jsonRetreats);
+            if (typeof retreats[0] != 'undefined') {
+              console.log('good to go');
+              console.log('retreat 1', retreats[0].name);
+              var result = {success:true, data: jsonRetreats};
+              response.json(result);
+            }
+          });
+          
+      }
+    }); 
+    
+		// pass things along to the next function
+	} else {
+    // They are not logged in
+		// Send back an unauthorized status
+		var result = {success:false, data: "Access Denied"};
+		response.json(result);
+	}
+}

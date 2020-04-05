@@ -74,9 +74,14 @@ p {
 <h1>Your Account</h1>
 
 <div class="flex-container">
-<div id='user'>Loading account info...</div>
-<div id='email'></div>
-<div id='id'></div>
+  <div id='user'>Loading account info...</div>
+  <div id='email'></div>
+  <div id='id'></div>
+  <br>
+  <button id="getAttendingRetreats" class="search-btn">Retreats You're Attending</button><br>
+  <div id='attendingRetreats'></div>
+  <button id="getHostingRetreats" class="search-btn">Retreats You're Hosting</button>
+  <div id='hostingRetreats'></div>
 </div>
 <br><br>
 <!-- idea: maybe only show the basic info, and then they click a button 
@@ -98,10 +103,41 @@ $.get('/getAccountInfo',function(result){
   }
   else {
     window.location.assign('signIn.html');
-  }
+  }  
+});
 
+$('#getAttendingRetreats').click(function(){
+  console.log('get it');
+  $.get('/getAttendingRetreats',function(result){
+    if (result && result.success) {
+      console.log(result.data);
+      var retreats  = JSON.parse(result.data);
+      var i = 0;
+      while(typeof retreats[i] != 'undefined') {
+        console.log(retreats[i].name);
+        $('#attendingRetreats').append("<p>" + retreats[i].name + " - $" + retreats[i].price +  "</p>")
+        i++;
+      }
 
+    }
+  });
+});
 
+$('#getHostingRetreats').click(function(){
+  console.log('get it');
+  $.get('/getHostingRetreats',function(result){
+    if (result && result.success) {
+      console.log(result.data);
+      var retreats  = JSON.parse(result.data);
+      var i = 0;
+      while(typeof retreats[i] != 'undefined') {
+        console.log(retreats[i].name);
+        $('#hostingRetreats').append("<p>" + retreats[i].name + " - $" + retreats[i].price +  "</p>")
+        i++;
+      }
+
+    }
+  });
 });
 
 </script>
